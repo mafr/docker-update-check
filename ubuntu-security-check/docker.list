@@ -1,0 +1,2 @@
+# Apt configuration file snippet, will be copied to /etc/apt/sources.list.d/
+deb http://get.docker.io/ubuntu docker main
