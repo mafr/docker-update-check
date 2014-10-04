@@ -4,8 +4,11 @@ NAME = ubuntu-security-repo
 build:
 	docker build -t $(TAG) .
 
-run: build
+run:
 	docker run --detach --name $(NAME) $(TAG)
 
-interactive: build
-	docker run -t -i --rm --name $(NAME) --entrypoint /bin/bash $(TAG)
+update:
+	docker run --rm --volumes-from $(NAME) ubuntu:14.04 apt-get update
+
+view:
+	docker run -t -i --rm --volumes-from $(NAME) busybox /bin/sh

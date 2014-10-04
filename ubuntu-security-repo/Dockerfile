@@ -1,8 +1,5 @@
-FROM ubuntu:14.04
-
-RUN apt-get update
+FROM busybox
 
 VOLUME ["/var/lib/apt/"]
 
-ENTRYPOINT ["/usr/bin/apt-get"]
-CMD ["update"]
+ENTRYPOINT ["/bin/echo", "data-only container"]

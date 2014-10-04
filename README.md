@@ -1,15 +1,34 @@
 Docker Security Check
 =====================
 
-There are two images with different tasks. The ubuntu-security-repo is
-instantiated once and is responsible for keeping itself updated with
-the latest package indices from Ubuntu  by running "apt-get update"
-regularly. The container makes the indices in its /var/lib/apt/ directory
-available as a volume.
+The idea is pretty simple. In Ubuntu, you can run the
+/usr/lib/update-notifier/apt-check tool from the update-notifier-common
+package to see if there are security updates or other updates that need
+to be installed. To achieve this, the apt-check tool compares the list of
+installed packages found in the /var/lib/dpkg/status file with package
+lists from /var/lib/apt/lists/. Package management tools keep the status
+file up to date automatically, but you have to run "apt-get update"
+regularly to keep the package lists current.
 
-The ubuntu-security-check image mounts the /var/lib/apt/ volume and the
-Docker host's unix domain socket in /var/run/docker.sock. This means
-the security check has access to both the current apt indices and all
-running containers, including files from their filesystems. It downloads
-the list of installed packages from /var/lib/dpkg/status and checks
-whether any of them needs updating.
+Checking whether a given container X has all the latest and greatest
+packages installed, you can do the following:
+
+  * Run a temporary Ubuntu container Y with current package lists.
+  * Extract the status file from X and copy it to Y, overwriting Y's
+    own status file.
+  * Run the apt-check tool on Y.
+  * Destroy Y and repeat.
+
+Since Y is a temporary container, we don't want to run "apt-get update"
+each time we create it so we keep its /var/lib/apt/ directory inside
+a data-only container Z and mount it as a volume. Y runs "apt-get update"
+only if the package lists are too old. Y gets the host's Docker socket in
+/var/run/docker.sock mounted as a volume to give it access to any
+container X's filesystem.
+
+
+How Do I Set It Up?
+-------------------
+
+Run a cron job regularly that updates the apt package lists inside the
+security repo container.
