@@ -14,9 +14,8 @@ Checking whether a given container X has all the latest and greatest
 packages installed, you can do the following:
 
   * Run a temporary Ubuntu container Y with current package lists.
-  * Extract the status file from X and copy it to Y, overwriting Y's
-    own status file.
-  * Run the apt-check tool on Y.
+  * Extract the status file from X and copy it to Y
+  * Run the apt-check tool on Y using X's status file.
   * Destroy Y and repeat.
 
 Since Y is a temporary container, we don't want to run "apt-get update"

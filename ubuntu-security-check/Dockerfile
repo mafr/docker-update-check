@@ -6,6 +6,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 36A1D78692
 RUN apt-get update
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y update-notifier-common lxc-docker
 
-ADD check.sh /
+ADD apt.conf /security-check/
+ADD check.sh /security-check/
 
-ENTRYPOINT ["/check.sh"]
+ENTRYPOINT ["/security-check/check.sh"]
