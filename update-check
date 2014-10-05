@@ -1,0 +1,36 @@
+#! /bin/bash
+
+TAG=mafr/ubuntu-security-check
+REPO_NAME=ubuntu-security-repo
+
+USAGE="Usage: $(basename $0) check|run|update"
+
+COMMAND=$1
+shift
+
+if [ -z "$COMMAND" ]; then
+    echo "$USAGE" >&2
+    exit 1
+fi
+
+case "$COMMAND" in
+    check)
+	for CONTAINER; do
+	    echo "--- $CONTAINER ---"
+	    docker run --rm --volumes-from=$REPO_NAME:ro \
+			--volume=/var/run/docker.sock:/var/run/docker.sock \
+			--env CONTAINER_TO_CHECK=$CONTAINER \
+			$TAG
+	done
+	;;
+    run)
+	echo "Running data-only container $REPO_NAME"
+	docker run --detach --name=$REPO_NAME $TAG
+	;;
+    update)
+	echo "Updating data-only container $REPO_NAME"
+	docker run --rm --volumes-from=$REPO_NAME ubuntu:14.04 apt-get update
+	;;
+    \?)
+	;;
+esac
