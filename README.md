@@ -20,9 +20,8 @@ packages installed, you can do the following:
 
 Since Y is a temporary container, we don't want to run "apt-get update"
 each time we create it so we keep its /var/lib/apt/ directory inside
-a data-only container Z and mount it as a volume. Y runs "apt-get update"
-only if the package lists are too old. Y gets the host's Docker socket in
-/var/run/docker.sock mounted as a volume to give it access to any
+a data-only container Z and mount it as a volume. Y gets the host's Docker
+socket in /var/run/docker.sock mounted as a volume to give it access to any
 container X's filesystem.
 
 

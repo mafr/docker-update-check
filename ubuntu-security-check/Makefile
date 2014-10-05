@@ -1,26 +1,27 @@
 TAG = mafr/ubuntu-security-check
-NAME = ubuntu-security-check
-REPO_NAME = ubuntu-security-repo
-
-# Run via:
-#   make run CONTAINER_TO_CHECK=my-container-name"
-#
-CONTAINER_TO_CHECK =
-
 
 build:
 	docker build -t $(TAG) .
 
+#
+# Everything below this line is for testing and debugging only.
+#
+# Run via:
+#   make run CONTAINER_TO_CHECK=my-container-name"
+#
+REPO_NAME = ubuntu-security-repo
+CONTAINER_TO_CHECK =
+
 run: check-params
-	docker run --rm --name=$(NAME) --volumes-from=$(REPO_NAME) \
+	docker run --rm --volumes-from=$(REPO_NAME):ro \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
 		--env CONTAINER_TO_CHECK=$(CONTAINER_TO_CHECK) \
 		$(TAG)
 
 interactive: check-params
-	docker run -t -i --rm --name=$(NAME) --volumes-from=$(REPO_NAME) \
+	docker run -t -i --rm --volumes-from=$(REPO_NAME):ro \
 		--volume=/var/run/docker.sock:/var/run/docker.sock \
-		--entrypoint /bin/bash \
+		--entrypoint=/bin/bash \
 		--env CONTAINER_TO_CHECK=$(CONTAINER_TO_CHECK) \
 		$(TAG)
 
