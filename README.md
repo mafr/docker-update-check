@@ -44,7 +44,7 @@ any container X's filesystem.
 How Do I Use It?
 ----------------
 
-First of all, build the Docker images.
+First of all, build the Docker images by running `make`.
 
 Next, create the data-only security repo container that will hold the
 package lists:
