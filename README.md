@@ -49,15 +49,15 @@ First of all, build the Docker images by running `make`.
 Next, create the data-only security repo container that will hold the
 package lists:
 
-    update-check run
+    ./update-check run
 
 Run a cron job regularly that updates those apt package lists:
 
-    update-check update
+    ./update-check update
 
 To get an update report from a given list of containers, run the `check`
 command:
 
-    update-check check CONTAINER-ID...
+    ./update-check check CONTAINER-ID
 
 Note that only Ubuntu-based containers are supported at this point.
