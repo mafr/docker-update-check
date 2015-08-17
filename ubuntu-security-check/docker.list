@@ -1,2 +1,2 @@
 # Apt configuration file snippet, will be copied to /etc/apt/sources.list.d/
-deb http://get.docker.io/ubuntu docker main
+deb https://apt.dockerproject.org/repo ubuntu-trusty main
